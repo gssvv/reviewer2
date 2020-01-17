@@ -1,0 +1,7 @@
+@each $display in (none, block, flex)
+  .d-#{$display}
+    display: $display !important
+  @each $size in xl, lg, md, sm
+    @include respond-to($size)
+      .d-#{$size}-#{$display}
+        display: $display !important

@@ -1,0 +1,42 @@
+// Variables and mixins
+
+$text-primary: #222222
+$text-primary-l-1: #666666
+$text-primary-l-2: #999999
+$text-primary-l-3: #aaaaaa
+$text-primary-l-4: #ccc
+$text-primary-l-5: #dddddd
+$text-primary-l-6: #eeeeee
+$text-secondary: #ffffff
+
+$primary: #3598DC
+$primary-d-1: #4193cc
+$primary-d-2: #1d6698
+
+
+$danger: #C0392B
+$success: #27AE60
+
+$bg: #F5F7FA
+
+$small: 560px
+$medium: 740px
+$large: 980px
+$xlarge: 1280px
+
+@mixin respond-to($media)
+  @if $media == sm
+    @media only screen and (max-width: $small - 1)
+      @content
+
+  @else if $media == md
+    @media only screen and (max-width: $medium - 1)
+      @content
+
+  @else if $media == lg
+    @media only screen and (max-width: $large - 1)
+      @content
+
+  @else if $media == xl
+    @media only screen and (max-width: $xlarge - 1)
+      @content
