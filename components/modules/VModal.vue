@@ -1,11 +1,58 @@
 <template lang="pug">
-  .v-modal
-    slot
+  .v-modal(v-if="value" @click.self="$emit('input', false)")
+    .v-modal__content(:style="`width: ${width}px;`")
+      img(src="/img/icons/close.svg" @click="$emit('input', false)").v-modal__close
+      slot
     
 </template>
 
 <script>
-export default {}
+export default {
+  props: {
+    value: Boolean,
+    width: {
+      type: Number,
+      default: 530
+    }
+  }
+}
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="sass">
+.v-modal
+  height: 100vh
+  width: 100vw
+  position: fixed
+  background-color: rgba(34,34,34,.8)
+  display: flex
+  align-items: flex-start
+  justify-content: center
+  left: 0
+  top: 0
+  z-index: 20
+  overflow: auto
+
+  &__content
+    background-color: #fff
+    border-radius: 4px
+    margin: 80px 0
+    padding: 24px
+    position: relative
+
+  &__close
+    right: 8px
+    position: absolute
+    top: -32px
+    height: 18px
+    width: 18px
+    cursor: pointer
+    transition: .1s ease
+    &:active
+      opacity: .5
+
+  @include respond-to(sm)
+    &__content
+      margin: 48px 0
+      padding: 20px 16px
+      border-radius: 0
+</style>

@@ -1,5 +1,24 @@
 .btn
   transition: .25s ease
+
+  &--black
+    padding: 16px 24px
+    text-transform: uppercase
+    font-weight: 500
+    color: #fff
+    background-color: #222
+    border-radius: 4px
+    letter-spacing: .1em
+    font-size: 14px
+    cursor: pointer
+    transition: .25s ease
+    display: inline-block
+    &:hover
+      background-color: #444
+    &:active
+      transition: .1s ease
+      background-color: #000
+
   &--text
     color: $primary
     letter-spacing: .1em
@@ -12,6 +31,7 @@
       color: $primary-d-1
     &:active
       color: $primary-d-2
+
   &--icon
     cursor: pointer
     display: flex
@@ -28,6 +48,7 @@
       img
         transform: scale(.85)
         opacity: .5
+
   &--back
     display: flex
     align-items: center

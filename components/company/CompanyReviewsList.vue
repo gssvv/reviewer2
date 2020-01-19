@@ -3,28 +3,43 @@
     .company-reviews__head
       .company-reviews__head-left
         h1.company-reviews__title(v-if="isFull") Химпромстрой
+
         .d-flex
           .capture Отзывы
           .l-spacer
-          nuxt-link(to="/" v-if="isFull").btn.btn--text.regular.company-reviews__add.d-none.d-md-block Добавить отзыв
+          a(v-if="isFull" @click="reviewModal = true").btn.btn--text.regular.company-reviews__add.d-none.d-md-block Добавить отзыв
+      
       .company-reviews__head-right
         reviews-stats(:values="[999, 888, 777]" small :title="title")
-        nuxt-link(to="/").btn.btn--text.regular.company-reviews__add Добавить отзыв
+        a(@click="reviewModal = true").btn.btn--text.regular.company-reviews__add Добавить отзыв
+
     .company-reviews__list
       review-item(v-for="item in isFull ? 5 : 4" :key="item")
 
-    .company-reviews__actions
-      a.btn.btn--text.regular.d-md-none Добавить отзыв
+    .company-reviews__actions 
+      a(@click="reviewModal = true").btn.btn--text.regular.d-md-none Добавить отзыв
       nuxt-link(to="/company/0/reviews").btn.btn--text.regular Все отзывы (25)
+
+    v-modal(v-model="reviewModal" :width="580")
+      add-review
+      
+
 
 </template>
 
 <script>
-import ReviewsStats from '@/components/modules/ReviewsStats'
 import ReviewItem from '@/components/reviews/ReviewItem'
+import AddReview from '@/components/company/CompanyAddReview'
+import ReviewsStats from '@/components/modules/ReviewsStats'
+import VModal from '@/components/modules/VModal'
 
 export default {
-  components: { ReviewsStats, ReviewItem },
+  components: {
+    ReviewsStats,
+    ReviewItem,
+    AddReview,
+    VModal
+  },
   props: {
     title: {
       type: String,
@@ -33,11 +48,15 @@ export default {
     isFull: {
       type: Boolean
     }
-  }
+  },
+  data: () => ({
+    reviewModal: false
+  }),
+  methods: {}
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
 .company-reviews
   padding: 28px 0px 36px 0px
   width: 100%

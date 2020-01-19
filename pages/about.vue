@@ -17,11 +17,9 @@
 
 <script>
 import Hat from '@/components/common/CommonHat'
-import ListHead from '@/components/home/HomeListHead'
-import CompanyCard from '@/components/home/HomeCompanyCard'
 
 export default {
-  components: { Hat, ListHead, CompanyCard },
+  components: { Hat },
   data: () => ({
     hat: {
       title: 'О проекте'

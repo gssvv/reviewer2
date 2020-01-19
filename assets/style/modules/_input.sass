@@ -1,0 +1,78 @@
+.v-input
+  position: relative
+
+  input, textarea
+    font-size: 18px
+    background-color: #f9f9f9
+    padding: 12px
+    border: none
+    font-family: 'PT Root UI', sans-serif
+    width: 100%
+    &:focus
+      outline: none
+    &::-webkit-input-placeholder
+      color: $text-primary-l-4
+    &.has-icon
+      padding-right: 43px
+    &.has-capture
+      padding-right: 82px
+
+  &--file
+    .v-input__field
+      max-width: 288px
+      input
+        &[type='file']
+          z-index: 5
+          cursor: pointer
+          position: absolute
+          opacity: 0
+
+  textarea
+    height: 200px
+    resize: none
+
+  &__field
+    position: relative
+
+  &__capture
+    position: absolute
+    right: 12px
+    font-size: 18px
+    top: 11px
+
+  &__icon
+    position: absolute
+    height: 19px
+    right: 12px
+    top: 14px
+    &.clickable
+      transition: .25s ease
+      cursor: pointer
+      &:hover
+        opacity: .75
+      &:active
+        transition: .1s ease
+        transform: scale(.85)
+        opacity: .5
+
+  &__message
+    font-size: 13px
+    margin-top: 6px
+    color: $text-primary-l-3
+
+  &__name
+    font-size: 13px
+    text-transform: uppercase
+    color: $text-primary-l-2
+    letter-spacing: .1em
+    margin-bottom: 12px
+    width: 100%
+
+  &.flat
+    input
+      background-color: transparent
+      padding-left: 0
+      padding-top: 0
+      padding-bottom: 0
+    .v-input__icon
+      top: 2px

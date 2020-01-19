@@ -1,23 +1,35 @@
 <template lang="pug">
   .review-item
-    .review-item__head
-      img(src="/img/icons/smile-green.svg" alt="Позитивный отзыв о строительной компании").review-item__status
-      span.review-item__author Анастасия
-      .l-spacer
-      span.review-item__date 23.03.2019
+    .review-item__wrapper(@click="showModal")
+      .review-item__head
+        img(src="/img/icons/smile-green.svg" alt="Позитивный отзыв о строительной компании").review-item__status
+        span.review-item__author Анастасия
+        .l-spacer
+        span.review-item__date 23.03.2019
 
-    .review-item__content Купила старую двушку, убитую, но зато недорого. Решила сделать ремонт, какие нет, мне составили смету. Решили полы переделать...
+      .review-item__content Купила старую двушку, убитую, но зато недорого. Решила сделать ремонт, какие нет, мне составили смету. Решили полы переделать...
 
-    .review-item__images
-      .review-item__images-item: img(src="/img/avatar.jpg" alt="Фото работы строительной компании")
-      .review-item__images-item: img(src="/img/avatar.jpg" alt="Фото работы строительной компании")
-      .review-item__images-item: img(src="/img/avatar.jpg" alt="Фото работы строительной компании")
-      span +5
+      .review-item__images
+        .review-item__images-item: img(src="/img/room.jpg" alt="Фото работы строительной компании")
+        .review-item__images-item: img(src="/img/room.jpg" alt="Фото работы строительной компании")
+        .review-item__images-item: img(src="/img/room.jpg" alt="Фото работы строительной компании")
+        span +5
 
-    v-modal
+    v-modal(v-model="modal")
       .review-item__modal
-        .review-item__modal-content
-          span hello
+        .review-item__head
+          img(src="/img/icons/smile-green.svg" alt="Позитивный отзыв о строительной компании").review-item__status
+          span.review-item__author Анастасия
+          .l-spacer
+          span.review-item__date 23.03.2019
+
+        .review-item__content Купила старую двушку, убитую, но зато недорого. Решила сделать ремонт, какие нет, мне составили смету. Решили полы переделать...
+
+        .review-item__images-full
+          img(src="/img/room.jpg" alt="Фото работы строительной компании")
+          img(src="/img/room.jpg" alt="Фото работы строительной компании")
+          img(src="/img/room.jpg" alt="Фото работы строительной компании")
+        
 
 
 
@@ -27,24 +39,33 @@
 import VModal from '@/components/modules/VModal'
 
 export default {
-  components: { VModal }
+  components: { VModal },
+  data: () => ({
+    modal: false
+  }),
+  methods: {
+    showModal() {
+      this.modal = true
+    }
+  }
 }
 </script>
 
 <style lang="sass">
 .review-item
-  padding: 16px 20px 20px
-  margin-bottom: 8px
-  transition: .25s ease
-  cursor: pointer
-  border-radius: 4px
   min-width: 280px
   max-width: 430px
-  &:hover
-    background-color: #F5F5F5
-  &:active
-    transition: .1s ease
-    background-color: #e4e4e4
+  margin-bottom: 8px
+  &__wrapper
+    padding: 16px 20px 20px
+    transition: .25s ease
+    cursor: pointer
+    border-radius: 4px
+    &:hover
+      background-color: #F5F5F5
+    &:active
+      transition: .1s ease
+      background-color: #e4e4e4
 
   &__head
     display: flex
@@ -70,6 +91,16 @@ export default {
     font-size: 14px
     line-height: 1.4
 
+  &__images-full
+    margin-top: 28px
+    img
+      max-width: 100%
+      margin-left: auto
+      margin-right: auto
+      display: block
+      &:not(:last-child)
+        margin-bottom: 20px
+
   &__images
     margin-top: 20px
     display: flex
@@ -94,7 +125,8 @@ export default {
     max-width: unset
 
   @include respond-to(md)
-    padding: 16px
+    &__wrapper
+      padding: 16px
 
     &:hover
       background-color: #fff
