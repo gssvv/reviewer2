@@ -1,8 +1,9 @@
 module.exports = {
   mode: 'spa',
-  // generate: {
-  //   routes: ['/company/1']
-  // },
+  // mode: 'universal',
+  generate: {
+    routes: ['/company/0', '/company/0/reviews']
+  },
   // mode: 'spa',
 
   /*

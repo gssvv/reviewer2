@@ -1,8 +1,9 @@
 <template lang="pug">
-  .v-modal(v-if="value" @click.self="$emit('input', false)")
-    .v-modal__content(:style="`width: ${width}px;`")
-      img(src="/img/icons/close.svg" @click="$emit('input', false)").v-modal__close
-      slot
+  .v-modal(@click.self="$emit('input', false)" :class="{active: value}")
+    transition(name="fade-translate")
+      .v-modal__content(v-if="value" :style="`width: ${width}px;`")
+        img(src="/img/icons/close.svg" @click="$emit('input', false)").v-modal__close
+        slot
     
 </template>
 
@@ -23,7 +24,7 @@ export default {
   height: 100vh
   width: 100vw
   position: fixed
-  background-color: rgba(34,34,34,.8)
+  background-color: rgba(34,34,34,0)
   display: flex
   align-items: flex-start
   justify-content: center
@@ -31,6 +32,12 @@ export default {
   top: 0
   z-index: 20
   overflow: auto
+  transition: .25s ease
+  pointer-events: none
+  &.active
+    background-color: rgba(34,34,34,.8)
+    pointer-events: auto
+
 
   &__content
     background-color: #fff

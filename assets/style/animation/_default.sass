@@ -3,3 +3,29 @@
     transform: rotate(0deg)
   100%
     transform: rotate(360deg)
+
+.fade-translate-enter-active, .fade-translate-leave-active
+  transition: .25s
+
+.fade-translate-enter, .fade-translate-leave-to
+  opacity: 0
+  transform: translateY(32px)
+
+.fade-translate-icons-enter-active, .fade-translate-icons-leave-active
+  transition: .25s
+
+.fade-translate-icons-enter
+  opacity: 0
+  transform: translateY(12px)
+
+.fade-translate-icons-leave-to
+  opacity: 0
+  transform: translateY(-12px)
+  
+
+.fade-translate-list-enter-active, .fade-translate-list-leave-active
+  transition: .25s
+
+.fade-translate-list-enter, .fade-translate-list-leave-to
+  opacity: 0
+  transform: translateY(12px)

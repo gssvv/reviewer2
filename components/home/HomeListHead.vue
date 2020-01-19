@@ -25,7 +25,8 @@ export default {
       placeholder: 'Поиск по названию...',
       icon: 'search',
       class: 'flat search',
-      iconClickable: true
+      iconClickable: true,
+      loading: false
     },
     showPrice: {
       value: false,
@@ -39,7 +40,11 @@ export default {
   },
   methods: {
     searchQuery() {
-      console.log(123)
+      console.log('Searching...')
+      this.search.loading = true
+      setTimeout(() => {
+        this.search.loading = false
+      }, 1000)
     }
   }
 }

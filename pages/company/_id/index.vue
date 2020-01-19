@@ -41,7 +41,9 @@
                   img(src="/img/icons/marker.svg" :alt="`Адрес строительной компании ${company.title}`")
                   span Москва, Высоковольтный проезд д. 1 стр. 49 БЦ "ВольтЦентр"
 
-              .company-info__pricing
+              p(v-if="!showPricing" @click="showPricing = true").btn.btn--text.d-none.d-sm-block.company-info__expand.mt-6 Показать цены
+
+              .company-info__pricing.mb-4-sm(:class="{'d-sm-none': !showPricing}")
                 .company-info__pricing-item
                   .capture Капитальный ремонт
                   p от 1200р./м²
@@ -54,10 +56,9 @@
                   .capture Капитальный ремонт
                   p от 1200р./м²
 
+            p(v-if="!showDesc" @click="showDesc = true").btn.btn--text.d-none.d-sm-block.company-info__expand Показать описание
             
-            .company-info__desc Наши цены на ремонт квартир формируются из сложности, площади, количества привлеченного персонала, оборудования и технологий. Основная стоимость - затраченный объем материалов и индивидуальные решения нестандартных вопросов.
-
-            //- .company-info__expand-btn
+            .company-info__desc.mt-2-sm(:class="{'d-sm-none': !showDesc}") Наши цены на ремонт квартир формируются из сложности, площади, количества привлеченного персонала, оборудования и технологий. Основная стоимость - затраченный объем материалов и индивидуальные решения нестандартных вопросов.
 
             
           company-reviews-list(v-bind="company")
@@ -75,6 +76,8 @@ import ReviewsStats from '@/components/modules/ReviewsStats'
 export default {
   components: { Hat, CompanyReviewsList, ReviewsStats },
   data: () => ({
+    showDesc: false,
+    showPricing: false,
     company: {
       avatar: {
         url: '/uploads/be67d57652984dfea751a793801ea1f9.png'
@@ -152,6 +155,11 @@ export default {
     margin-right: 32px
 
   &-info
+    &__expand
+      width: 100%
+      text-align: center
+      padding-top: 12px
+      padding-bottom: 12px
     &__general
       display: flex
       align-items: center

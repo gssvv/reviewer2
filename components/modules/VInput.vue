@@ -11,12 +11,23 @@
         :class="{'has-icon': !!icon, 'has-capture': !!capture}" 
         @keyup.enter="submit")
 
-      img(
-        v-if="icon" 
-        :src="`/img/icons/${icon}.svg`" 
-        @click="submit" 
-        :class="{'clickable': iconClickable}"
-        ).v-input__icon
+      transition(name="fade-translate-icons")
+
+        img(
+          key="one"
+          v-if="loading" 
+          :src="`/img/icons/loading.svg`" 
+          ).v-input__icon.loading
+
+        img(
+          key="two"
+          v-if="!loading && icon" 
+          :src="`/img/icons/${icon}.svg`" 
+          @click="submit" 
+          :class="{'clickable': iconClickable}"
+          ).v-input__icon
+
+      
 
       span(v-if="capture" v-text="capture").v-input__capture 
 
@@ -42,6 +53,9 @@ export default {
     icon: {
       type: String,
       default: ''
+    },
+    loading: {
+      type: Boolean
     },
     placeholder: {
       type: String,

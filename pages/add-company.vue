@@ -27,11 +27,14 @@
             v-input(v-model="form.price2.value" v-bind="form.price2")
             v-input(v-model="form.price3.value" v-bind="form.price3")
 
-          a.btn.btn--black.mt-9.mt-4-sm.add-company__form-submit Отправить на модерацию
+          p(v-if="formStatus" v-text="formStatus").announce-block
 
-          v-checkbox(v-model="form.policy.value").mt-5
-            | Я ознакомился и согласен с 
-            nuxt-link(to="/policy").underlined политикой конфиденциальности
+          template(v-else)
+            a.btn.btn--black.mt-9.mt-4-sm.add-company__form-submit Отправить на модерацию
+
+            v-checkbox(v-model="form.policy.value").mt-5
+              | Я ознакомился и согласен с 
+              nuxt-link(to="/policy").underlined политикой конфиденциальности
           
 
         .content-blocks__contacts
@@ -50,6 +53,7 @@ import VCheckbox from '@/components/modules/VCheckbox'
 export default {
   components: { Hat, VInput, VFile, VCheckbox },
   data: () => ({
+    formStatus: '',
     hat: {
       title: 'Добавить компанию'
     },

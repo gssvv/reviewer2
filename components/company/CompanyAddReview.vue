@@ -6,8 +6,9 @@
     v-input(v-model="form.content.value" v-bind="form.content")
     v-file(v-model="form.images.value" v-bind="form.images" @input="filesLoaded")
     
-    .company-reviews__form-images
-      .company-reviews__form-images-item(v-for="(item, index) in form.images.imagesLoaded" @click="removeImg(index)"): img(:src="item.src")
+    
+    transition-group(name="fade-translate-list").company-reviews__form-images
+      .company-reviews__form-images-item(v-for="(item, index) in form.images.imagesLoaded" :key="item.src" @click="removeImg(index)"): img(:src="item.src")
 
     a.btn.btn--black.mt-6 Отправить на модерацию
     v-checkbox(v-model="form.policy.value").mt-5
