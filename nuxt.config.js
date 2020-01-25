@@ -1,6 +1,6 @@
 module.exports = {
-  mode: 'spa',
-  // mode: 'universal',
+  // mode: 'spa',
+  mode: 'universal',
   generate: {
     routes: ['/company/0', '/company/0/reviews']
   },
@@ -10,7 +10,7 @@ module.exports = {
    ** Headers of the page
    */
   head: {
-    title: 'Ремонт Википедия | Рейтинг компаний по ремонту квартир в Москве',
+    title: 'Рейтинг ремонтных компаний в Москве | Ремонт Википедия',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -18,10 +18,10 @@ module.exports = {
         hid: 'description',
         name: 'description',
         content:
-          'На нашем сайте Вы найдете независимый рейтинг компаний, занимающихся ремонтом и отделкой квартир.'
+          'Помогаем найти действительно достойного и проверенного подрядчика, учитывая отзывы и рекомендации клиентов.'
       }
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
+    link: [{ rel: 'icon', type: 'image/png', href: '/favicon.png' }]
   },
   /*
    ** Customize the progress-bar color
@@ -48,7 +48,7 @@ module.exports = {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    // 'nuxt-dayjs-module',
+    'nuxt-dayjs-module',
     '@nuxtjs/axios',
     '@nuxtjs/style-resources'
   ],

@@ -10,7 +10,7 @@
       .l-row.site-info
         span(v-text="`Все права защищены © ${currentYear}`")
         nuxt-link(to="/policy").text-center Политика конфиденциальности
-        span.text-right info@website.ru
+        span.text-right(v-text="email")
 
 </template>
 
@@ -24,6 +24,9 @@ export default {
     Navigation
   },
   computed: {
+    email() {
+      return this.$store.getters.getEmail
+    },
     currentYear() {
       return new Date().getFullYear()
     }

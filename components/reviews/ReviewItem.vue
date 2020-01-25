@@ -2,35 +2,33 @@
   .review-item
     .review-item__wrapper(@click="showModal")
       .review-item__head
-        img(src="/img/icons/smile-green.svg" alt="Позитивный отзыв о строительной компании").review-item__status
-        span.review-item__author Анастасия
+        img(
+          :src="`/img/icons/${positive ? 'smile-green' : 'sad-red'}.svg`" 
+          :alt="`${positive ? 'Позитивный' : 'Негативный'} отзыв о строительной компании ${title}`").review-item__status
+        span(v-text="author").review-item__author
         .l-spacer
-        span.review-item__date 23.03.2019
+        span(v-text="$dayjs(date).format('DD.MM.YYYY')").review-item__date
 
-      .review-item__content Купила старую двушку, убитую, но зато недорого. Решила сделать ремонт, какие нет, мне составили смету. Решили полы переделать...
+      .review-item__content(v-text="content")
 
       .review-item__images
-        .review-item__images-item: img(src="/img/room.jpg" alt="Фото работы строительной компании")
-        .review-item__images-item: img(src="/img/room.jpg" alt="Фото работы строительной компании")
-        .review-item__images-item: img(src="/img/room.jpg" alt="Фото работы строительной компании")
-        span +5
+        .review-item__images-item(v-for="(photo, index) in photos.slice(0, 3)" :key="index"): img(:src="$axios.defaults.baseURL + photo.url" :alt="`Фото работы строительной компании ${title}`")
+        span(v-if="photos.length > 3" v-text="`+${photos.length - 3}`")
 
     v-modal(v-model="modal")
       .review-item__modal
         .review-item__head
-          img(src="/img/icons/smile-green.svg" alt="Позитивный отзыв о строительной компании").review-item__status
-          span.review-item__author Анастасия
+          img(
+          :src="`/img/icons/${positive ? 'smile-green' : 'sad-red'}.svg`" 
+          :alt="`${positive ? 'Позитивный' : 'Негативный'} отзыв о строительной компании ${title}`").review-item__status
+          span(v-text="author").review-item__author
           .l-spacer
-          span.review-item__date 23.03.2019
+          span(v-text="$dayjs(date).format('DD.MM.YYYY')").review-item__date
 
-        .review-item__content Купила старую двушку, убитую, но зато недорого. Решила сделать ремонт, какие нет, мне составили смету. Решили полы переделать...
+        .review-item__content(v-text="content")
 
-        .review-item__images-full
-          img(src="/img/room.jpg" alt="Фото работы строительной компании")
-          img(src="/img/room.jpg" alt="Фото работы строительной компании")
-          img(src="/img/room.jpg" alt="Фото работы строительной компании")
-        
-
+        .review-item__images-full(v-if="photos.length")
+          img(v-for="(photo, index) in photos" :src="$axios.defaults.baseURL + photo.url" :alt="`Фото работы строительной компании ${title}`")
 
 
 </template>
@@ -40,6 +38,33 @@ import VModal from '@/components/modules/VModal'
 
 export default {
   components: { VModal },
+  props: {
+    positive: Boolean,
+    author: {
+      type: String,
+      default: ''
+    },
+    date: {
+      type: String,
+      default: ''
+    },
+    content: {
+      type: String,
+      default: ''
+    },
+    work: {
+      type: String,
+      default: ''
+    },
+    photos: {
+      type: Array,
+      default: () => []
+    },
+    title: {
+      type: String,
+      default: ''
+    }
+  },
   data: () => ({
     modal: false
   }),

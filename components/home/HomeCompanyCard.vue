@@ -1,34 +1,28 @@
 <template lang="pug">
-  nuxt-link(:to="`/company/${companyId}`" tag="div").company-card
-    .company-card__avatar: img(src="/img/avatar.jpg" :alt="title")
+  nuxt-link(:to="link" tag="div").company-card
+    .company-card__avatar: img(:src="avatar ? $axios.defaults.baseURL + avatar.url : $axios.defaults.baseURL + '/uploads/default.png'" :alt="title")
     .company-card__group.wide
-      span.capture.regular.primary 1 место
-      h4 Химпромстрой
+      span(v-text="`${rating} место`").capture.regular.primary
+      h4(v-text="title")
 
     .company-card__group.rating
       span.capture Рейтинг
-      span 102.7
+      span(v-text="rankingRate")
     
     .company-card__group
       span.capture Ценовой сегмент
-      span.company-card__price-seg ₽₽₽₽
+      span(v-text="priceSegment").company-card__price-seg
 
     .company-card__group.mr-0
       span.capture Отзывы
-      reviews-stats(:values="[991,992,993]")
+      reviews-stats(:values="[reviews,reviewsPos, reviewsNeg]")
 
     .company-card__pricing
-      .company-card__group.wide.font-size-14.text-primary-l-2.line-height-150 Москва, Высоковольтный проезд д. 1 стр. 49 БЦ "ВольтЦентр"
+      .company-card__group.wide.font-size-14.text-primary-l-2.line-height-150(v-text="address")
 
-      .company-card__group
-        span.capture Косметический ремонт
-        span от 1200р./м²
-      .company-card__group
-        span.capture Капитальный ремонт
-        span от 1200р./м²
-      .company-card__group
-        span.capture Элитный ремонт
-        span от 1200р./м²
+      .company-card__group(v-for="(price, index) in pricing" :key="index")
+        span.capture(v-text="price.title")
+        span(v-text="price.value + ' р./м²'") 
 
 
 
@@ -37,11 +31,13 @@
 
 <script>
 import ReviewsStats from '@/components/modules/ReviewsStats'
+import ComputedProps from '@/components/mixins/ComputedProps'
 
 export default {
   components: {
     ReviewsStats
   },
+  mixins: [ComputedProps],
   props: {
     avatar: {
       type: Object,
@@ -54,6 +50,10 @@ export default {
     companyId: {
       type: Number,
       default: 0
+    },
+    address: {
+      type: String,
+      default: ''
     },
     rating: {
       type: Number,
@@ -74,6 +74,17 @@ export default {
     reviewsPos: {
       type: Number,
       default: 0
+    },
+    searchText: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    link() {
+      let link = { path: `/company/${this.companyId}` }
+      link.query = this.searchText ? { search: this.searchText } : undefined
+      return link
     }
   }
 }
@@ -89,6 +100,8 @@ export default {
   flex-wrap: wrap
   cursor: pointer
   transition: box-shadow .25s ease, background .1s ease
+  &:not(:last-child)
+  margin-bottom: 20px
   &:hover
     box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1)
   &:active

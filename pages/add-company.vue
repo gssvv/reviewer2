@@ -30,9 +30,9 @@
           p(v-if="formStatus" v-text="formStatus").announce-block
 
           template(v-else)
-            a.btn.btn--black.mt-9.mt-4-sm.add-company__form-submit Отправить на модерацию
+            a(@click="sendForm").btn.btn--black.mt-9.mt-4-sm.add-company__form-submit Отправить на модерацию
 
-            v-checkbox(v-model="form.policy.value").mt-5
+            v-checkbox(v-model="form.policy.value" v-bind="form.policy").mt-5
               | Я ознакомился и согласен с 
               nuxt-link(to="/policy").underlined политикой конфиденциальности
           
@@ -49,9 +49,11 @@ import Hat from '@/components/common/CommonHat'
 import VInput from '@/components/modules/VInput'
 import VFile from '@/components/modules/VFile'
 import VCheckbox from '@/components/modules/VCheckbox'
+import ValidateForm from '@/components/mixins/ValidateForm'
 
 export default {
   components: { Hat, VInput, VFile, VCheckbox },
+  mixins: [ValidateForm],
   data: () => ({
     formStatus: '',
     hat: {
@@ -83,7 +85,8 @@ export default {
         error: '',
         message: '',
         placeholder: '+7 (000) 000-00-00',
-        required: true
+        required: true,
+        mask: `\\+\\7 (111) 111-1111`
       },
       email: {
         name: 'Email',
@@ -91,7 +94,7 @@ export default {
         error: '',
         message: '',
         placeholder: 'info@example.com',
-        required: true
+        required: false
       },
       address: {
         name: 'Адрес',
@@ -137,14 +140,59 @@ export default {
         file: {}
       },
       policy: {
-        val: true,
+        value: true,
         error: '',
-        message: 'Максимальный размер – 1МБ',
+        messages: {
+          required: 'Необходимо подтвердить согласие с политикой'
+        },
         required: true
       }
     }
   }),
   methods: {
+    async sendForm() {
+      if (!this.validateForm('form')) return
+
+      let payload = {}
+
+      Object.keys(this.form).map((key) => {
+        if (key == 'avatar') return
+        payload[key] = this.form[key].value
+      })
+
+      payload.pricing = [
+        {
+          title: 'Косметический ремонт',
+          value: payload.price1
+        },
+        {
+          title: 'Капитальный ремонт',
+          value: payload.price2
+        },
+        {
+          title: 'Элитный ремонт',
+          value: payload.price3
+        }
+      ]
+
+      let formData = new FormData()
+
+      formData.append(
+        'files.avatar',
+        this.form.avatar.file,
+        this.form.avatar.file.name
+      )
+      formData.append('data', JSON.stringify(payload))
+
+      try {
+        await this.$axios.post('/companies', formData)
+        this.formStatus =
+          'Ваша заявка принята. Информация о компании будет опубликована на сайте после модерации.'
+      } catch (e) {
+        this.formStatus =
+          'Возникла ошибка. Пожалуйста, попробуйте сделать заявку позже или свяжитесь с администрацией сайта.'
+      }
+    },
     fileLoaded(files) {
       this.form.avatar.error = ''
       let file = files[0]

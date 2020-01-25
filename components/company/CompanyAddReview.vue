@@ -10,8 +10,10 @@
     transition-group(name="fade-translate-list").company-reviews__form-images
       .company-reviews__form-images-item(v-for="(item, index) in form.images.imagesLoaded" :key="item.src" @click="removeImg(index)"): img(:src="item.src")
 
-    a.btn.btn--black.mt-6 Отправить на модерацию
-    v-checkbox(v-model="form.policy.value").mt-5
+    p(v-if="formStatus" v-text="formStatus").announce-block
+
+    a(@click="sendReview" v-else).btn.btn--black.mt-6 Отправить на модерацию
+    v-checkbox(v-model="form.policy.value" v-bind="form.policy").mt-5
       | Я ознакомился и согласен с 
       nuxt-link(to="/policy").underlined политикой конфиденциальности
 </template>
@@ -21,6 +23,7 @@ import VInput from '@/components/modules/VInput'
 import VFile from '@/components/modules/VFile'
 import VCheckbox from '@/components/modules/VCheckbox'
 import VTabs from '@/components/modules/VTabs'
+import ValidateForm from '@/components/mixins/ValidateForm'
 
 export default {
   components: {
@@ -29,20 +32,32 @@ export default {
     VCheckbox,
     VTabs
   },
+  mixins: [ValidateForm],
+  props: {
+    id: {
+      type: String,
+      default: ''
+    }
+  },
   data: () => ({
+    formStatus: '',
     form: {
       author: {
         value: '',
         placeholder: 'Иван',
         error: '',
-        name: 'Ваше имя'
+        name: 'Ваше имя',
+        required: true
       },
       content: {
         value: '',
         placeholder: 'Опишите ваш опыт работу с данной компанией',
         error: '',
         name: 'Текст отзыва',
-        textarea: true
+        textarea: true,
+        required: true,
+        minLength: 10,
+        maxLength: 300
       },
       images: {
         value: null,
@@ -54,7 +69,12 @@ export default {
         imagesLoaded: []
       },
       policy: {
-        value: true
+        value: true,
+        error: '',
+        required: true,
+        messages: {
+          required: 'Необходимо подтвердить согласие с политикой'
+        }
       },
       positive: {
         value: true,
@@ -63,6 +83,38 @@ export default {
     }
   }),
   methods: {
+    async sendReview() {
+      if (!this.validateForm('form')) return
+
+      let payload = {}
+
+      Object.keys(this.form).map((key) => {
+        payload[key] = this.form[key].value
+      })
+
+      payload.companyId = this.id
+
+      let formData = new FormData()
+
+      for (let file of this.form.images.imagesLoaded) {
+        formData.append('files.photos', file, file.name)
+      }
+
+      formData.append('data', JSON.stringify(payload))
+
+      this.reviewSending = true
+
+      try {
+        await this.$axios.post('/reviews', formData)
+
+        this.formStatus =
+          'Ваш отзыв успешно отправлен и будет опубликован после модерации.'
+      } catch (e) {
+        this.formStatus =
+          'Возникла ошибка. Пожалуйста, попробуйте опубликовать отзыв позже или свяжитесь с администрацией сайта.'
+      }
+      this.reviewSending = false
+    },
     filesLoaded(files) {
       let filesCounter = this.form.images.imagesLoaded.length
       this.form.images.error = ''

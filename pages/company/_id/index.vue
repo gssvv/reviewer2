@@ -5,60 +5,52 @@
     .company__content
       .l-container
         .l-row
-          nuxt-link(to="/").btn.btn--text.btn--back
+          nuxt-link(:to="{path: '/', query: {search: $route.query.search}}").btn.btn--text.btn--back
             img(src="/img/icons/angle-left.svg" alt="Вернуться к рейтингу строительных компаний")
             span Рейтинг
       
         .l-row.mt-5.mt-4-sm
           .company__info
             .company-info__head
-              .capture.primary.regular 1 место 
-              .capture.regular.text-primary-l-2 Рейтинг 102.7
+              .capture.primary.regular(v-text="company.rating + ' место'")
+              .capture.regular.text-primary-l-2(v-text="`Рейтинг ${rankingRate}`")
 
             .company-info__general
-              .company-info__logo: img(src="/img/avatar.jpg" :alt="company.title")
+              .company-info__logo: img(:src="company.avatar ? $axios.defaults.baseURL + company.avatar.url : $axios.defaults.baseURL + '/uploads/default.png'" :alt="company.title")
               div
-                .capture.primary.regular.d-md-none 1 место в рейтинге
-                h1.company-info__title Химпромстрой
-                reviews-stats(:values="[132, 888, 777]" small :title="company.title").company-info__stats
+                .capture.primary.regular.d-md-none(v-text="`${company.rating} место в рейтинге`")
+                h1(v-text="company.title").company-info__title
+                reviews-stats(:values="[company.reviewsCount,company.reviewsCountPos, company.reviewsCountNeg]" small :title="company.title").company-info__stats
               .company-info__rating
-                .company-info__rating-value 102.7
+                .company-info__rating-value(v-text="rankingRate")
                 .capture
-                  img(src='/img/icons/question.svg' :alt="`Рейтинг строительной компании ${company.title}`")
+                  //- img(src='/img/icons/question.svg' :alt="`Рейтинг строительной компании ${company.title}`")
                   span Рейтинг
 
             .company-info__details
               .company-info__contact
                 .company-info__contact-item
                   img(src="/img/icons/phone.svg" :alt="`Телефон строительной компании ${company.title}`")
-                  span +0 (000) 000-00-00
+                  span(v-text="company.phone || 'Не указано'")
 
                 .company-info__contact-item.empty
                   img(src="/img/icons/envelope.svg" :alt="`Почта строительной компании ${company.title}`")
-                  span Не указано
+                  span(v-text="company.email || 'Не указано'")
 
                 .company-info__contact-item.address
                   img(src="/img/icons/marker.svg" :alt="`Адрес строительной компании ${company.title}`")
-                  span Москва, Высоковольтный проезд д. 1 стр. 49 БЦ "ВольтЦентр"
+                  span(v-text="company.address || 'Не указано'")
 
               p(v-if="!showPricing" @click="showPricing = true").btn.btn--text.d-none.d-sm-block.company-info__expand.mt-6 Показать цены
 
               .company-info__pricing.mb-4-sm(:class="{'d-sm-none': !showPricing}")
-                .company-info__pricing-item
-                  .capture Капитальный ремонт
-                  p от 1200р./м²
-
-                .company-info__pricing-item
-                  .capture Капитальный ремонт
-                  p от 1200р./м²
-
-                .company-info__pricing-item
-                  .capture Капитальный ремонт
-                  p от 1200р./м²
+                .company-info__pricing-item(v-for="(price, index) in company.pricing" :key="index")
+                  .capture(v-text="price.title")
+                  span(v-text="price.value + ' р./м²'") 
 
             p(v-if="!showDesc" @click="showDesc = true").btn.btn--text.d-none.d-sm-block.company-info__expand Показать описание
             
-            .company-info__desc.mt-2-sm(:class="{'d-sm-none': !showDesc}") Наши цены на ремонт квартир формируются из сложности, площади, количества привлеченного персонала, оборудования и технологий. Основная стоимость - затраченный объем материалов и индивидуальные решения нестандартных вопросов.
+            .company-info__desc.mt-2-sm(:class="{'d-sm-none': !showDesc}" v-text="company.desc")
 
             
           company-reviews-list(v-bind="company")
@@ -72,58 +64,32 @@
 import Hat from '@/components/common/CommonHat'
 import CompanyReviewsList from '@/components/company/CompanyReviewsList'
 import ReviewsStats from '@/components/modules/ReviewsStats'
+import ComputedProps from '@/components/mixins/ComputedProps'
 
 export default {
   components: { Hat, CompanyReviewsList, ReviewsStats },
+  mixins: [ComputedProps],
   data: () => ({
     showDesc: false,
-    showPricing: false,
-    company: {
-      avatar: {
-        url: '/uploads/be67d57652984dfea751a793801ea1f9.png'
-      },
-      title: 'Химпромстрой',
-      companyId: 0,
-      rating: 1,
-      pricing: [
-        {
-          title: 'Косметический ремонт',
-          value: 123
-        },
-        {
-          title: 'Капитальный ремонт',
-          value: 123
-        },
-        {
-          title: 'Элитный ремонт',
-          value: 123
-        }
-      ],
-      address: 'г. Москва, ул. Ленина, д.12',
-      dateAdded: '2019-12-09T10:14:35.139Z',
-      phone: '+2 (131) 231-23-12',
-      reviews: [
-        {
-          author: 'Александр',
-          work: 'Обои',
-          content: 'Все очень хорошо.',
-          positive: true,
-          date: '2019-12-09T10:22:45.535Z',
-          photos: [
-            {
-              url: '/uploads/29d826e801ab4e24bc76ca15f8b335ee.jpg'
-            }
-          ]
-        }
-      ],
-      desc:
-        'Наши цены на ремонт квартир формируются из сложности, площади, количества привлеченного персонала, оборудования и технологий. Основная стоимость - затраченный объем материалов и индивидуальные решения нестандартных вопросов.Самостоятельный расчет возможен для стандартных работ, а стоимость согласования документации на ремонт инженерных систем квартиры рассчитывается для каждого объекта отдельно. Доставка строительных материалов и их закупка не входит в общий прайс.',
-      id: '5dee1e8b1b2deb29266595ec',
-      reviewsCount: 1,
-      reviewsCountNeg: 0,
-      reviewsCountPos: 1
+    showPricing: false
+  }),
+  computed: {},
+  async asyncData(context) {
+    let result = {}
+    let id = context.route.params.id
+
+    try {
+      const res = await context.$axios.get(`/companies/${id}`)
+      result.company = res.data
+    } catch (e) {
+      result.message = `Ошибка: ${e.response.status}`
+
+      if (e.response.status == 404)
+        result.message = 'Запрашиваемая страница не найдена'
     }
-  })
+
+    return result
+  }
 }
 </script>
 
@@ -219,6 +185,8 @@ export default {
         font-size: 20px
         &.address
           font-size: 16px
+          span
+            margin-top: 3px
         &.empty
           color: $text-primary-l-4
         span
@@ -255,8 +223,10 @@ export default {
         &__list
           display: flex
           flex-wrap: wrap
-          .review-item:last-child
-            display: block
+          .review-item
+            flex: auto 1 0
+            &:last-child
+              display: block
 
     &__info
       width: 100%

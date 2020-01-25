@@ -5,13 +5,12 @@
     .reviews__content
       .l-container
         .l-row
-          nuxt-link(to="/company/0").btn.btn--text.btn--back
+          nuxt-link(:to="{path: `/company/${$route.params.id}`, query: {search: $route.query.search}}").btn.btn--text.btn--back
             img(src="/img/icons/angle-left.svg" alt="Вернуться к рейтингу строительных компаний")
             span О компании
 
         .l-row.mt-5.mt-4-sm
-          company-reviews-list(:title="title" is-full)
-
+          company-reviews-list(is-full v-bind="company" :loading="reviewsLoading" @load-more="loadMore" :all-loaded="stopPagination")
 </template>
 
 <script>
@@ -21,9 +20,78 @@ import CompanyReviewsList from '@/components/company/CompanyReviewsList'
 export default {
   components: { Hat, CompanyReviewsList },
   data: () => ({
-    title: 'Компания',
-    reviews: []
-  })
+    reviewsLoading: false,
+    queryStart: 9,
+    stopPagination: true
+  }),
+  async asyncData(context) {
+    let result = {}
+    let id = context.route.params.id
+
+    try {
+      const res = await context.$axios.get(`/companies/${id}`)
+      result.company = res.data
+      result.queryStart = res.data.reviews.length
+    } catch (e) {
+      result.message = `Ошибка: ${e.response.status}`
+
+      if (e.response.status == 404)
+        result.message = 'Запрашиваемая страница не найдена'
+    }
+
+    return result
+  },
+  mounted() {
+    this.initLoadOnScroll()
+  },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.scrollHandler)
+  },
+  methods: {
+    async initLoadOnScroll() {
+      window.addEventListener('scroll', this.scrollHandler)
+      if (this.company.reviews.length >= 9) this.stopPagination = false
+    },
+    async scrollHandler() {
+      if (
+        this.reviewsLoading ||
+        !this.company.reviews.length ||
+        this.stopPagination
+      )
+        return
+
+      let rect = document
+        .querySelector('.company-reviews')
+        .getBoundingClientRect()
+      let blockHeight = document.querySelector('.company-reviews').clientHeight
+      let scrollTop = window.pageYOffset
+
+      let triggerHeight = rect.top + scrollTop + blockHeight
+      let bottomScroll = scrollTop + window.innerHeight
+
+      if (triggerHeight <= bottomScroll) {
+        this.loadMore()
+      }
+    },
+    async loadMore() {
+      try {
+        this.reviewsLoading = true
+        const res = await this.$axios.get(
+          `/reviews/${this.company.companyId}?_limit=9&_start=${this.queryStart}`
+        )
+
+        this.queryStart += res.data.length
+
+        if (res.data.length == 0) this.stopPagination = true
+
+        this.company.reviews.push(...res.data)
+
+        this.reviewsLoading = false
+      } catch (e) {
+        console.log(e)
+      }
+    }
+  }
 }
 </script>
 
@@ -47,8 +115,8 @@ export default {
         display: block
         margin-top: 12px
 
-      &__actions
-        display: none
+      // &__actions
+        // display: none
 
 
   @include respond-to(lg)

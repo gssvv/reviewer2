@@ -4,12 +4,14 @@
 
     .v-input__field
       component(
-        :is="textarea ? `textarea` : `input`" type="text" 
+        :is="componentName" type="text" 
         :placeholder="placeholder" 
         :value="value" 
-        @input="change" 
+        @input.self="change" 
+        :name="name"
         :class="{'has-icon': !!icon, 'has-capture': !!capture}" 
-        @keyup.enter="submit")
+        :mask="mask"
+        @keyup.enter.self="submit")
 
       transition(name="fade-translate-icons")
 
@@ -41,6 +43,9 @@
 
 <script>
 export default {
+  components: {
+    'masked-input': () => (process.client ? import('vue-masked-input') : {})
+  },
   props: {
     value: {
       type: String,
@@ -78,11 +83,25 @@ export default {
     },
     textarea: {
       type: Boolean
+    },
+    mask: {
+      type: String,
+      default: ''
+    }
+  },
+  computed: {
+    componentName() {
+      if (this.textarea) return 'textarea'
+
+      if (this.mask) return 'masked-input'
+
+      return 'input'
     }
   },
   methods: {
     change(e) {
-      this.$emit('input', e.target.value)
+      let value = this.mask ? e : e.target.value
+      this.$emit('input', value)
     },
     submit(e) {
       this.$emit('submit', e.target.value)

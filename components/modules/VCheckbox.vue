@@ -6,6 +6,10 @@
       input(type="checkbox" @input="change" :checked="value")
       span.v-checkbox__checkmark
     slot(name="after")
+    .v-input__message(
+      v-if="error || message" 
+      v-text="error || message" 
+      :class="{danger: error}")
   
 
 </template>
@@ -15,6 +19,14 @@ export default {
   props: {
     value: {
       type: Boolean
+    },
+    error: {
+      type: String,
+      default: ''
+    },
+    message: {
+      type: String,
+      default: ''
     }
   },
   methods: {

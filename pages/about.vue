@@ -5,12 +5,11 @@
     .content-blocks.l-container
       .l-row
         .content-blocks__main
-          p Наши цены на ремонт квартир формируются из сложности, площади, количества привлеченного персонала, оборудования и технологий. Основная стоимость - затраченный объем материалов и индивидуальные решения нестандартных вопросов.
-          p Самостоятельный расчет возможен для стандартных работ, а стоимость согласования документации на ремонт инженерных систем квартиры рассчитывается для каждого объекта отдельно. Доставка строительных материалов и их закупка не входит в общий прайс.
+          p(v-html="about.content")
 
         .content-blocks__contacts
           span.capture  Почта для связи: 
-          a(href="mailto:info@site.com" target="_blank").email info@site.com
+          a(:href="`mailto:${email}`" target="_blank" v-text="email").email
 
     
 </template>
@@ -20,11 +19,36 @@ import Hat from '@/components/common/CommonHat'
 
 export default {
   components: { Hat },
+  head() {
+    return {
+      title: `О проекте | Ремонт Википедия`
+    }
+  },
   data: () => ({
     hat: {
       title: 'О проекте'
     }
-  })
+  }),
+  computed: {
+    email() {
+      return this.$store.getters.getEmail
+    }
+  },
+  async asyncData(context) {
+    let result = {}
+
+    try {
+      const res = await context.$axios.get(`/abouts`)
+      result.about = res.data
+    } catch (e) {
+      result.message = `Ошибка: ${e.response.status}`
+
+      if (e.response.status == 404)
+        result.message = 'Запрашиваемая страница не найдена'
+    }
+
+    return result
+  }
 }
 </script>
 

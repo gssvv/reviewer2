@@ -1,11 +1,11 @@
 <template lang="pug">
   .reviews-stats(:class="{small}")
-    img(src="/img/icons/dialogue-blue.svg" :alt="`Положительные отзывы о ${title}`" v-if="values[0]")
-    span(v-text="values[0]" v-if="values[0]").primary
-    img(src="/img/icons/smile-green.svg" :alt="`Положительные отзывы о ${title}`" v-if="values[1]")
-    span(v-text="values[1]" v-if="values[1]").success
-    img(src="/img/icons/sad-red.svg" :alt="`Положительные отзывы о ${title}`" v-if="values[2]")
-    span(v-text="values[2]" v-if="values[2]").danger
+    img(src="/img/icons/dialogue-blue.svg" :alt="`Положительные отзывы о ${title}`" v-if="values[0] != null")
+    span(v-text="values[0]" v-if="values[0] != null").primary
+    img(src="/img/icons/smile-green.svg" :alt="`Положительные отзывы о ${title}`" v-if="values[1] != null")
+    span(v-text="values[1]" v-if="values[1] != null").success
+    img(src="/img/icons/sad-red.svg" :alt="`Положительные отзывы о ${title}`" v-if="values[2] != null")
+    span(v-text="values[2]" v-if="values[2] != null").danger
 </template>
 
 <script>

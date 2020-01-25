@@ -26,7 +26,6 @@ export default {
   position: fixed
   background-color: rgba(34,34,34,0)
   display: flex
-  align-items: flex-start
   justify-content: center
   left: 0
   top: 0
@@ -34,6 +33,7 @@ export default {
   overflow: auto
   transition: .25s ease
   pointer-events: none
+  padding: 80px 0 144px 0
   &.active
     background-color: rgba(34,34,34,.8)
     pointer-events: auto
@@ -42,7 +42,7 @@ export default {
   &__content
     background-color: #fff
     border-radius: 4px
-    margin: 80px 0
+    margin: auto
     padding: 24px
     position: relative
 
@@ -59,7 +59,6 @@ export default {
 
   @include respond-to(sm)
     &__content
-      margin: 48px 0
       padding: 20px 16px
       border-radius: 0
 </style>
