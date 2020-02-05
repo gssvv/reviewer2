@@ -38,7 +38,7 @@ module.exports = {
   /*
    ** Plugins to load before mounting the App
    */
-  plugins: [],
+  plugins: ['~/plugins/loadOnScroll.js'],
   /*
    ** Nuxt.js dev-modules
    */
@@ -48,6 +48,7 @@ module.exports = {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
+    '@nuxtjs/dotenv',
     'nuxt-dayjs-module',
     '@nuxtjs/axios',
     '@nuxtjs/style-resources'

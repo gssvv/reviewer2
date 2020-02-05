@@ -11,6 +11,7 @@
         :name="name"
         :class="{'has-icon': !!icon, 'has-capture': !!capture}" 
         :mask="mask"
+        ref="input"
         @keyup.enter.self="submit")
 
       transition(name="fade-translate-icons")
@@ -104,7 +105,7 @@ export default {
       this.$emit('input', value)
     },
     submit(e) {
-      this.$emit('submit', e.target.value)
+      this.$emit('submit', this.$refs.input.value)
     }
   }
 }

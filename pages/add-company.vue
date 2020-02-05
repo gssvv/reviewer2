@@ -137,6 +137,7 @@ export default {
         error: '',
         name: 'Логотип',
         message: 'Максимальный размер – 1МБ',
+        accept: '.png, .jpg, .jpeg',
         file: {}
       },
       policy: {

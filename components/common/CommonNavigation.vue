@@ -23,6 +23,10 @@ export default {
       {
         text: 'Правила',
         to: '/rules'
+      },
+      {
+        text: 'Блог',
+        to: '/blog'
       }
     ]
   }),

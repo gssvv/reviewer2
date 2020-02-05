@@ -24,6 +24,22 @@ export default {
     queryStart: 9,
     stopPagination: true
   }),
+  head() {
+    return {
+      title: this.company
+        ? 'Отзывы о компании ' + this.company.title
+        : `Страница не найдена | Ремонт Википедия`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            (this.company && this.company.desc) ||
+            `Страница не найдена | Ремонт Википедия`
+        }
+      ]
+    }
+  },
   async asyncData(context) {
     let result = {}
     let id = context.route.params.id

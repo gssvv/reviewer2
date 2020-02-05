@@ -69,6 +69,22 @@ import ComputedProps from '@/components/mixins/ComputedProps'
 export default {
   components: { Hat, CompanyReviewsList, ReviewsStats },
   mixins: [ComputedProps],
+  head() {
+    return {
+      title: this.company
+        ? this.company.title + ' | Ремонт Википедия'
+        : `Страница не найдена | Ремонт Википедия`,
+      meta: [
+        {
+          hid: 'description',
+          name: 'description',
+          content:
+            (this.company && this.company.desc) ||
+            `Страница не найдена | Ремонт Википедия`
+        }
+      ]
+    }
+  },
   data: () => ({
     showDesc: false,
     showPricing: false
@@ -108,7 +124,7 @@ export default {
         display: none
 
       &__list
-        .review-item:last-child
+        .review-item:nth-child(4)
           display: none
 
   &__info
@@ -225,7 +241,7 @@ export default {
           flex-wrap: wrap
           .review-item
             flex: auto 1 0
-            &:last-child
+            &:nth-child(4)
               display: block
 
     &__info
@@ -244,7 +260,7 @@ export default {
       margin-top: -324px
       .company-reviews
         &__list
-          .review-item:last-child
+          .review-item:nth-child(4)
             display: none
 
   @include respond-to(md)
