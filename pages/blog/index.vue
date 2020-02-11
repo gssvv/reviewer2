@@ -5,18 +5,19 @@
     .content-blocks.l-container
       .l-row
         .content-blocks__main.blog__list(v-load-on-scroll="{onScroll, name: 'articles'}")
-          .blog__search
-            v-input(v-model="search.value" v-bind="search" :loading="searchLoading" @submit="searchQuery").search
-          
-          .empty-state(v-if="articles.length === 0 && !loading") Статьи не найдены
+          .blog__articles-wrapper
+            .blog__search
+              v-input(v-model="search.value" v-bind="search" :loading="searchLoading" @submit="searchQuery").search
+            
+            .empty-state(v-if="articles.length === 0 && !loading") Статьи не найдены
 
-          
-          template(v-if="articles.length !== 0")
-            article-card(v-for="(item, index) in articles" :key="index" v-bind="item")
-            .article-card
-            .article-card
+            
+            template(v-if="articles.length !== 0")
+              article-card(v-for="(item, index) in articles" :key="index" v-bind="item")
+              .article-card
+              .article-card
 
-          v-loading(v-if="loading")
+            v-loading(v-if="loading")
     
 </template>
 
@@ -119,10 +120,11 @@ export default {
   &__search
     width: 100%
     margin-bottom: 32px
+    padding: 0 16px
     .search
       max-width: 284px
-  &__list
-    flex: 100%
+
+  &__articles-wrapper
     margin: 0 -16px
     display: flex
     flex-wrap: wrap
@@ -131,7 +133,12 @@ export default {
       flex-direction: column
       min-width: 280px
       flex: 1
-      margin: 0 32px 40px 0
+      margin: 0 16px 40px
+  &__list
+    flex: 100%
 
-  @include respond-to(md)
+  @include respond-to(sm)
+    &__articles-wrapper
+      .article-card
+        min-width: 240px
 </style>
