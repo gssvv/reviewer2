@@ -9,7 +9,7 @@
 
       .l-row.site-info
         span(v-text="`Все права защищены © ${currentYear}`")
-        nuxt-link(to="/policy").text-center Политика конфиденциальности
+        nuxt-link(to="/rules").text-center Политика конфиденциальности
         span.text-right(v-text="email")
 
 </template>

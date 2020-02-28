@@ -150,6 +150,11 @@ export default {
       }
     }
   }),
+  head() {
+    return {
+      title: `Добавить компанию | Ремонт Википедия`
+    }
+  },
   methods: {
     async sendForm() {
       if (!this.validateForm('form')) return

@@ -51,7 +51,7 @@ export default {
       },
       content: {
         value: '',
-        placeholder: 'Опишите ваш опыт работу с данной компанией',
+        placeholder: 'Опишите ваш опыт работы с данной компанией',
         error: '',
         name: 'Текст отзыва',
         textarea: true,
