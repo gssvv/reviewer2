@@ -3,21 +3,21 @@
     .v-input__name(v-if="name" v-text="name")
 
     .v-tabs__item(style="color: #27AE60" :class="{active: value}" @click="change(true)")
-      i-smile(h="16" w="16")
+      i-like(h="16" w="16")
       .capture Позитивно
     .v-tabs__item(style="color: #C0392B" :class="{active: !value}" @click="change(false)")
-      i-sad(h="16" w="16")
+      i-dislike(h="16" w="16")
       .capture Негативно
 
     
 </template>
 
 <script>
-import ISmile from '@/components/icons/ISmile'
-import ISad from '@/components/icons/ISad'
+import ILike from '@/components/icons/ILike'
+import IDislike from '@/components/icons/IDislike'
 
 export default {
-  components: { ISmile, ISad },
+  components: { ILike, IDislike },
   props: {
     name: {
       type: String,

@@ -3,7 +3,7 @@
     .review-item__wrapper(@click="showModal")
       .review-item__head
         img(
-          :src="`/img/icons/${positive ? 'smile-green' : 'sad-red'}.svg`" 
+          :src="`/img/icons/${positive ? 'like' : 'dislike'}.svg`" 
           :alt="`${positive ? 'Позитивный' : 'Негативный'} отзыв о строительной компании ${title}`").review-item__status
         span(v-text="author").review-item__author
         .l-spacer
@@ -19,7 +19,7 @@
       .review-item__modal
         .review-item__head
           img(
-          :src="`/img/icons/${positive ? 'smile-green' : 'sad-red'}.svg`" 
+          :src="`/img/icons/${positive ? 'like' : 'dislike'}.svg`" 
           :alt="`${positive ? 'Позитивный' : 'Негативный'} отзыв о строительной компании ${title}`").review-item__status
           span(v-text="author").review-item__author
           .l-spacer
