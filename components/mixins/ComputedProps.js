@@ -7,8 +7,7 @@ export default {
       return 10 + this.reviewsPos - this.reviewsNeg
     },
     priceSegment() {
-      let price =
-        (this.company && this.company.pricing[0].value) || this.pricing[0].value
+      let price = (this.pricing[0] && this.pricing[0].value) || ''
 
       if (price <= 2000) return '₽'
       if (price <= 3500) return '₽₽'
